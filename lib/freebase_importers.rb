@@ -7,6 +7,8 @@ require "addressable/uri"
 require "rest_client"
 require "json"
 
+# https://developers.google.com/freebase/v1/mql-overview
+
 module FreebaseImporters
   def self.api_key
     ENV['GOOGLE_SIMPLE_API_ACCESS'] || missing_api_key_error!
@@ -34,7 +36,21 @@ module FreebaseImporters
       response = RestClient.get url.normalize.to_str, format: :json
       puts JSON.parse(response)
     end
+
+    def self.mql_search
+      url = Addressable::URI.parse('https://www.googleapis.com/freebase/v1/mqlread')
+      url.query_values = {
+        'query' =>
+          [{
+            "name" => nil,
+            "/common/topic/image" => [{}],
+            "type" => "/automotive/model"
+          }].to_json
+      }
+      response = RestClient.get url.normalize.to_str, format: :json
+      JSON.parse(response)
+    end
   end
 end
 
-puts FreebaseImporters::Cars.search
+# puts FreebaseImporters::Cars.mql_search
