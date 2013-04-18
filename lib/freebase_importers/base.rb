@@ -16,7 +16,7 @@ module FreebaseImporters
     def self.query(mql, cursor = nil)
       url = base_url
       url.query_values = {
-        'query' => mql.to_json,
+        'query' => [mql].to_json,
         'cursor' => cursor
       }
       RestClient.get url.normalize.to_s, format: :json
@@ -40,7 +40,7 @@ module FreebaseImporters
     end
 
     def self.mapped
-      @mapped
+      @mapped ||= []
     end
 
     def self.map(map_to, mql_key = nil)
@@ -51,13 +51,23 @@ module FreebaseImporters
       when Proc
         mql_key
       end
-      @mapped ||= []
-      @mapped << map_to
+      mapped << map_to
       define_method map_to, proc
     end
 
-    def freebase_image(path)
+    def self.map_images
+      map :thumbnail,   -> { thumbnails.first }
+      map :thumbnails,  -> { data['/common/topic/image'].collect {|image| freebase_thumb_url(image['id']) } }
+      map :image,       -> { images.first }
+      map :images,      -> { data['/common/topic/image'].collect {|image| freebase_image_url(image['id']) } }
+    end
+
+    def freebase_thumb_url(path)
       "https://usercontent.googleapis.com/freebase/v1/image#{path}"
+    end
+
+    def freebase_image_url(path)
+      "https://api.freebase.com/api/trans/raw#{path}"
     end
   end
 end

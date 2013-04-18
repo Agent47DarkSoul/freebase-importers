@@ -1,7 +1,7 @@
 module FreebaseImporters
   class Person < Base
     def self.mql
-      [{
+      {
         "id" => nil,
         "name" => nil,
         "place_of_birth" => nil,
@@ -9,7 +9,7 @@ module FreebaseImporters
           "id" => nil
         }],
         "type" => "/people/person"
-      }]
+      }
     end
 
     map :name

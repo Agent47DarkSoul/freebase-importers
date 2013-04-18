@@ -1,12 +1,12 @@
 module FreebaseImporters
   class Book < Base
     def self.mql
-      [{
+      {
         "name" => nil,
         "characters" => [],
         "genre" => [],
         "type" => "/book/book"
-      }]
+      }
     end
 
     map :name
