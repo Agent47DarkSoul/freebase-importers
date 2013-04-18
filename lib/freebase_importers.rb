@@ -8,7 +8,6 @@ require "rest_client"
 require "json"
 
 # https://developers.google.com/freebase/v1/mql-overview
-
 module FreebaseImporters
 
   Dir.glob("#{File.dirname(__FILE__)}/freebase_importers/*").each do |filename|

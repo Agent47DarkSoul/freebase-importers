@@ -30,13 +30,25 @@ module FreebaseImporters
       more_pages = true
       while(limit > 0 && more_pages) do
         cursor ||= nil
-        json_response = json_query(mql, cursor)
+        json_response = json_query(assembled_mql, cursor)
         result = json_response['result']
         cursor = more_pages = json_response['cursor']
         result.collect {|r| new(r) }.each do |model|
           yield(model)
         end
       end
+    end
+
+    def self.assembled_mql
+      mql.merge(query_modifications)
+    end
+
+    def self.query_modifications
+      {}
+    end
+
+    def self.first
+      all {|m| break(m) }
     end
 
     def self.mapped
