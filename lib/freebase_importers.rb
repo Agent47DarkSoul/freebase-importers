@@ -3,10 +3,6 @@ Dotenv.load
 
 require "#{File.dirname(__FILE__)}/freebase_importers/version"
 
-require "addressable/uri"
-require "rest_client"
-require "json"
-
 # https://developers.google.com/freebase/v1/mql-overview
 module FreebaseImporters
 

@@ -9,47 +9,46 @@ module FreebaseImporters
     end
 
     private
-    def self.base_url
-      Addressable::URI.parse('https://www.googleapis.com/freebase/v1/mqlread')
+
+    def self.query
+      Query.new(mql)
     end
 
-    def self.query(mql, cursor = nil)
-      url = base_url
-      url.query_values = {
-        'query' => [mql].to_json,
-        'cursor' => cursor
-      }
-      RestClient.get url.normalize.to_s, format: :json
+    def self.all
+      query.each do |result|
+        yield new(result)
+      end
     end
 
-    def self.json_query(mql, cursor=nil)
-      JSON.parse(query(mql, cursor))
+    class << self
+      private
+      def builder
+        @builder ||= QueryBuilder.new
+      end
+
+      def mql
+        @mql ||= {}
+      end
     end
 
-    def self.all(limit = 10)
-      more_pages = true
-      while(limit > 0 && more_pages) do
-        cursor ||= nil
-        json_response = json_query(assembled_mql, cursor)
-        result = json_response['result']
-        cursor = more_pages = json_response['cursor']
-        result.collect {|r| new(r) }.each do |model|
-          yield(model)
+    # add a filter or whatever
+    # "name" => nil,
+    # "/common/topic/image" => [ { "id" => nil } ],
+    # "model_years" => [ { "name" => nil } ],
+    # "make" => [{"name" => nil }],
+    # "type" => "/automotive/model"
+    def self.map2(target, value = nil, options = {}, &block)
+      mql["#{target}#{options[:comparison]}"] = value
+      key = "#{target}".split('/').last
+      if !value || value.empty? || block_given?
+        if block_given?
+          define_method key, block
+        else
+          define_method key, -> { data[target.to_s] }
         end
       end
     end
 
-    def self.assembled_mql
-      mql.merge(query_modifications)
-    end
-
-    def self.query_modifications
-      {}
-    end
-
-    def self.first
-      all {|m| break(m) }
-    end
 
     def self.mapped
       @mapped ||= []
