@@ -1,25 +1,21 @@
 module FreebaseImporters
   class Book < Base
-    def self.mql
-      {
-        "name" => nil,
-        "characters" => [],
-        "genre" => [],
-        "/book/written_work/date_of_first_publication" => nil,
-        "type" => "/book/book",
-        "/book/written_work/author" => []
-      }
-    end
-
     map :name
-    map :genre,        -> { genres.first }
-    map :genres,       -> { data["genre"] }
-    map :characters,   -> { data["characters"] }
-    map :authors,      -> { data["/book/written_work/author"] }
-    map :publish_date, -> {
+    map :characters, []
+
+    add_to_mql :"type", "/book/book"
+
+    add_to_mql :"/book/written_work/author", []
+    add_method :authors, CommonAccessors.single(:"/book/written_work/author")
+
+    add_to_mql :genre, []
+    add_method :genres,  -> { data['genre'] }
+    add_method :genre,   -> { genre.first   }
+
+    add_to_mql :"/book/written_work/date_of_first_publication"
+    add_method :date_of_first_publication, -> {
       pub = data["/book/written_work/date_of_first_publication"]
       pub ? Date.parse(pub) : nil rescue pub
     }
-
   end
 end

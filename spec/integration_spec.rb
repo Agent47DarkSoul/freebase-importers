@@ -17,8 +17,15 @@ describe FreebaseImporters do
   describe FreebaseImporters::Car do
     let(:car) { FreebaseImporters::Car.first }
     it "should have images and thumbnails" do
-      expect(car.thumbnails).not_to be_empty
-      expect(car.images).not_to be_empty
+      expect(car.thumbnail_urls).not_to be_empty
+      expect(car.image_urls).not_to be_empty
+    end
+  end
+
+  describe FreebaseImporters::Person do
+    let(:person) { FreebaseImporters::Person.first }
+    it "should have name" do
+      expect(person.name).to match /\w+/
     end
   end
 end

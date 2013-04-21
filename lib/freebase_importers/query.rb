@@ -38,6 +38,7 @@ module FreebaseImporters
     end
 
     def query
+      # puts "About to mql: #{mql.inspect}"
       url = base_url
       url.query_values = {
         'query' => [mql].to_json,
