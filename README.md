@@ -1,24 +1,43 @@
 # Freebase::Importers
 
-TODO: Write a gem description
+Some help for getting Freebase data into a more flat form.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
     gem 'freebase-importers'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install freebase-importers
+    require 'freebase_importers'
 
 ## Usage
 
-TODO: Write usage instructions here
+Figure out your query via https://www.freebase.com/query
+
+Then define a model to make that query and load accessors with results.
+
+    class Book < FreebaseImporters::Base
+      map :name
+      map :characters, []
+
+      add_to_mql :"type", "/book/book"
+
+      add_to_mql :"/book/written_work/author", []
+      add_method :authors, CommonAccessors.single(:"/book/written_work/author")
+
+      add_to_mql :genre, []
+      add_method :genres,  -> { data['genre'] }
+      add_method :genre,   -> { genres.first   }
+
+      add_to_mql :"/book/written_work/date_of_first_publication"
+      add_method :date_of_first_publication, -> {
+        pub = data["/book/written_work/date_of_first_publication"]
+        pub ? Date.parse(pub) : nil rescue pub
+      }
+    end
+
+*map* is good when you want to modify mql to get a value from Freebase and also create an accessor with the same name.
+
+*add_to_mq* just modifies mql.
+
+*add_method* just adds a method.
 
 ## Contributing
 
