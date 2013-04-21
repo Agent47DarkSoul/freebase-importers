@@ -42,8 +42,8 @@ module FreebaseImporters
       add_method :image_urls,     -> { image_ids.collect {|id| freebase_image_url(id) } }
       add_method :thumbnail_urls, -> { image_ids.collect {|id| freebase_thumb_url(id) } }
 
-      add_method :image_url,     -> { images.first }
-      add_method :thumbnail_url, -> { thumbnails.first }
+      add_method :image_url,     -> { image_urls.first }
+      add_method :thumbnail_url, -> { thumbnail_urls.first }
 
     end
 
