@@ -39,6 +39,21 @@ Then define a model to make that query and load accessors with results.
 
 *add_method* just adds a method.
 
+After defining a model, you query it like:
+
+    # "all" is a bit of a misnomer, actually just
+    # makes one query for a default of 100 records
+    Book.all do |book|
+      puts "#{book.name}, #{book.date_of_first_publication}"
+    end
+
+    # endless is not a misnomer ...
+    # records will keep coming until Google quits sending them
+    # The argument indicates the duration to pause between requests.
+    Book.endless(7) do |book|
+      puts "#{book.name}, #{book.date_of_first_publication}"
+    end
+
 ## Contributing
 
 1. Fork it
