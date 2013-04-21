@@ -10,7 +10,7 @@ module FreebaseImporters
 
     add_to_mql :genre, []
     add_method :genres,  -> { data['genre'] }
-    add_method :genre,   -> { genre.first   }
+    add_method :genre,   -> { genres.first   }
 
     add_to_mql :"/book/written_work/date_of_first_publication"
     add_method :date_of_first_publication, -> {
