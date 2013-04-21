@@ -20,6 +20,21 @@ describe FreebaseImporters do
       expect(car.thumbnail_urls).not_to be_empty
       expect(car.image_urls).not_to be_empty
     end
+
+    describe :endless do
+      it "should return a second page of results" do
+        counter = 0
+        images  = []
+        FreebaseImporters::Car.endless do |car|
+          counter += 1
+          images << car.image_url if counter < 50
+          if counter > 120
+            expect(images).not_to include(car.image_url)
+            break
+          end
+        end
+      end
+    end
   end
 
   describe FreebaseImporters::Person do

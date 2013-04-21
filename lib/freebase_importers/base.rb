@@ -31,6 +31,18 @@ module FreebaseImporters
       end
     end
 
+    def self.endless(pause = 1)
+      q = query
+      while q do
+        q.each do |result|
+          yield new(result)
+        end
+        puts "Getting some more in #{pause} seconds."
+        sleep pause
+        q = q.next
+      end
+    end
+
     def self.first
       all {|m| break(m) }
     end

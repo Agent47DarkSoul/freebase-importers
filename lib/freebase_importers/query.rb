@@ -20,8 +20,8 @@ module FreebaseImporters
 
     # https://developers.google.com/freebase/v1/mql-overview#querying-with-cursor-paging-results
     def next
-      if (cursor = result["cursor"])
-        self.class.new(mql, cursor)
+      if (new_cursor = response["cursor"])
+        self.class.new(mql, new_cursor)
       end
     end
 
