@@ -14,6 +14,15 @@ describe FreebaseImporters do
     end
   end
 
+  describe FreebaseImporters::President do
+    let (:president) { FreebaseImporters::President.first }
+    it "should have attributes" do
+      [:name, :id, :height_meters].each do |attr|
+        expect(president.send(attr)).not_to be_nil
+      end
+    end
+  end
+
   describe FreebaseImporters::Car do
     let(:car) { FreebaseImporters::Car.first }
     it "should have images and thumbnails" do
@@ -25,7 +34,7 @@ describe FreebaseImporters do
       it "should return a second page of results" do
         counter = 0
         images  = []
-        FreebaseImporters::Car.endless do |car|
+        FreebaseImporters::Car.endless(0) do |car|
           counter += 1
           images << car.image_url if counter < 50
           if counter > 120

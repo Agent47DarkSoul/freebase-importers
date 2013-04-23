@@ -37,7 +37,7 @@ module FreebaseImporters
         q.each do |result|
           yield new(result)
         end
-        puts "Getting some more in #{pause} seconds."
+        puts "Getting some more in #{pause} seconds." unless pause == 0
         sleep pause
         q = q.next
       end

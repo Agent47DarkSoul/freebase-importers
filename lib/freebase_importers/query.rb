@@ -38,7 +38,7 @@ module FreebaseImporters
     end
 
     def query
-      # puts "About to mql: #{mql.inspect}"
+      puts "About to mql: #{mql.inspect}" if ENV['FREEBASE_IMPORTS_DEBUG']
       url = base_url
       url.query_values = {
         'query' => [mql].to_json,

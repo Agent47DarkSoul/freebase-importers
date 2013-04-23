@@ -6,6 +6,10 @@ require "#{File.dirname(__FILE__)}/freebase_importers/version"
 # https://developers.google.com/freebase/v1/mql-overview
 module FreebaseImporters
 
+  def self.debug!
+    ENV['FREEBASE_IMPORTS_DEBUG'] = 'true'
+  end
+
   Dir.glob("#{File.dirname(__FILE__)}/freebase_importers/*").each do |filename|
     class_name = File.basename(filename, '.*').split('_').collect(&:capitalize).join.to_sym
     autoload class_name, filename
