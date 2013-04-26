@@ -7,6 +7,13 @@ describe FreebaseImporters do
     expect(FreebaseImporters).to be_a_kind_of Module
   end
 
+  describe FreebaseImporters::Animal do
+    let(:animal) { FreebaseImporters::Animal.first }
+    it "should have a name" do
+      expect(animal.name).to match /\w+/
+    end
+  end
+
   describe FreebaseImporters::Book do
     let(:book) { FreebaseImporters::Book.first }
     it "should have a name" do
