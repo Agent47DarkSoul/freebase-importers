@@ -1,5 +1,6 @@
 module FreebaseImporters
   class Book < Base
+    map :id
     map :name
     map :characters, []
 

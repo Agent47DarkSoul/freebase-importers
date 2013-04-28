@@ -1,5 +1,6 @@
 module FreebaseImporters
   class Car < Base
+    map :id
     map :name
 
     add_to_mql :type, "/automotive/model"
