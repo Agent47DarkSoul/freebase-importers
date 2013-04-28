@@ -42,7 +42,8 @@ module FreebaseImporters
       url = base_url
       url.query_values = {
         'query' => [mql].to_json,
-        'cursor' => cursor
+        'cursor' => cursor,
+        'key' => FreebaseImporters.api_key
       }
       RestClient.get url.normalize.to_s, format: :json
     end
