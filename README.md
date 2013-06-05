@@ -9,6 +9,30 @@ Some help for getting Freebase data into a more flat form.
 
 ## Usage
 
+    president = FreebaseImporters::President.first
+    => #<FreebaseImporters::President:0x007f8c7f8e7200
+     @data=
+      {"/government/us_president/presidency_number"=>[16],
+       "/people/person/height_meters"=>1.93,
+       "id"=>"/en/abraham_lincoln",
+       "/people/person/date_of_birth"=>"1809-02-12",
+       "/common/topic/image"=>
+        [{"id"=>"/m/02wtby_"},
+         {"id"=>"/wikipedia/images/commons_id/507818"},
+         {"id"=>"/wikipedia/images/commons_id/11760664"}],
+       "name"=>"Abraham Lincoln",
+       "type"=>"/government/us_president"}>
+    president.name          # "Abraham Lincoln"
+    president.date_of_birth # Sun, 12 Feb 1809
+    president.height_meters # 1.93
+    president.image_url     # "https://api.freebase.com/api/trans/raw/m/02wtby_"
+
+Built-in importers include Animal, Book, Car, Person, and President.
+
+I use these when a site is at an early stage and could benefit from some sort of real data. Generally I've found the Freebase data, while vast, is too loosely structured to be useful for publishing.
+
+## Make your own
+
 Figure out your query via https://www.freebase.com/query
 
 Then define a model to make that query and load accessors with results.
