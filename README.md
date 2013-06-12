@@ -7,6 +7,10 @@ Some help for getting Freebase data into a more flat form.
     gem 'freebase-importers'
     require 'freebase_importers'
 
+You'll need a GOOGLE_SIMPLE_API_ACCESS environment variable with a Freebase API key. You can get that API key by following instructions here: http://wiki.freebase.com/wiki/How_to_obtain_an_API_key
+
+(the dotenv gem is loaded so you can use .env to set those environment variables)
+
 ## Usage
 
     president = FreebaseImporters::President.first
